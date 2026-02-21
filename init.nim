@@ -50,32 +50,29 @@ proc mount() =
 proc udev() =
     echo "\nStarting udev..."
     discard execProcess("/sbin/mkdir -p /run/udev/data") 
+    echo "Exec > /lib/systemd/systemd-udevd --daemon"
+    echo "Exec > /sbin/udevadm trigger --action add"
+    echo "Exec > /sbin/udevadm settle"
     discard startProcess("/lib/systemd/systemd-udevd", args = ["--daemon"])
     discard startProcess("/sbin/udevadm", args = ["trigger --action add"])
     discard startProcess("/sbin/udevadm", args = ["settle"])
-    echo "udev started!"
-
-proc keymap() =
-    echo "Loading default keymap (us)"
-    discard execProcess("loadkeys us")
-    echo "\n"
+    echo "Udev started!"
 
 proc services() =
     echo "Entering runlevel 2"
     for service in walkFiles("/init/services/runlevel2/*.sh"):
         echo fmt"Starting {service}"
-        discard startProcess("/usr/bin/bash", args = [service], options = {poDaemon})
+        discard execShellCmd(fmt"/usr/bin/bash {service}")
     echo "Entering runlevel final"
     for service in walkFiles("/init/services/runlevel3/*.sh"):
         echo fmt"Starting {service}"
-        discard startProcess("/usr/bin/bash", args = [service], options = {poDaemon})
+        discard execShellCmd(fmt"/usr/bin/bash {service}")
     echo "\n"
 
 echo "Entering runlevel boot"
 mountfs()
 mount()
 udev()
-keymap()
 services()
 
 echo "Done!"
