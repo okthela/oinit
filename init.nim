@@ -34,7 +34,7 @@ proc mountfs() =
     discard execProcess("/sbin/mount -t devpts devpts /dev/pts -o newinstance,ptmxmode=0666,mode=0620")
  
     echo "Mounting cgroup -> /sys/fs/cgroup" 
-    discard execProcess("mount -t cgroup2 none /sys/fs/cgroup")
+    discard execProcess("/sbin/mount -t cgroup2 none /sys/fs/cgroup")
 
     echo "Pseudo-filesystems ready"
 
