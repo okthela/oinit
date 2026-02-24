@@ -1,3 +1,7 @@
+Well, this init is meant for a distro im making with my friend.
+
+This version currently uses systemd-udev, but the version that will be used on the distro, will use eudev.
+
 All that this does is start up your system and services
 
 Service handling works like this:
