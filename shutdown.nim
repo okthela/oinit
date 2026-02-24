@@ -19,8 +19,9 @@ proc shutdown() =
     sync()
     echo "Remounting / as Read-Only"
     discard execProcess("/sbin/mount -o remount,ro /")
-    discard posix.sleep(1)
     echo "Bye-bye!"
+    discard posix.sleep(1)
+    writeFile("/proc/sysrq-trigger", poweroff)
 
 proc reboot() =
     let poweroff = "b"
