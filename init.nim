@@ -29,6 +29,8 @@ proc mountfs() =
 
     echo "Mounting tmpfs -> /run"
     discard execProcess("/sbin/mount -t tmpfs tmpfs /run -o mode=0755,nosuid,nodev")
+    discard execProcess("mkdir -p /run/user")
+    discard execProcess("chmod 0755 /run/user")
 
     echo "Mounting devpts -> /dev/pts"
     discard execProcess("/sbin/mount -t devpts devpts /dev/pts -o newinstance,ptmxmode=0666,mode=0620")
@@ -41,14 +43,13 @@ proc mountfs() =
 proc mount() =
     echo "Mounting other partitions according to /etc/fstab..."
     let fstab = readFile("/etc/fstab")
-    echo "\n"
     echo fstab
     discard execProcess("/sbin/mount -a")
     echo "Remounting / as read-write..."
     discard execProcess("/sbin/mount -o remount,rw /")
 
 proc udev() =
-    echo "\nStarting udev..."
+    echo "Starting udev..."
     discard execProcess("/sbin/mkdir -p /run/udev/data") 
     echo "Exec > /lib/systemd/systemd-udevd --daemon"
     echo "Exec > /sbin/udevadm trigger --action add"
@@ -56,7 +57,6 @@ proc udev() =
     discard startProcess("/lib/systemd/systemd-udevd", args = ["--daemon"])
     discard startProcess("/sbin/udevadm", args = ["trigger --action add"])
     discard startProcess("/sbin/udevadm", args = ["settle"])
-    echo "Udev started!"
 
 proc services() =
     echo "Entering runlevel 2"
@@ -67,7 +67,6 @@ proc services() =
     for service in walkFiles("/init/services/runlevel3/*.sh"):
         echo fmt"Starting {service}"
         discard execShellCmd(fmt"/usr/bin/bash {service}")
-    echo "\n"
 
 echo "Entering runlevel boot"
 mountfs()
