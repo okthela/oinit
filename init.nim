@@ -1,4 +1,4 @@
-import os, osproc, strformat, posix
+import os, osproc, strformat, posix, terminal
 
 proc mountfs() =
     echo "Mounting pseudo-filesystems"
@@ -59,20 +59,26 @@ proc udev() =
     discard startProcess("/sbin/udevadm", args = ["settle"])
 
 proc services() =
+    setForegroundColor(fgBlue)
     echo "Entering runlevel 2"
     for service in walkFiles("/init/services/runlevel2/*.sh"):
         echo fmt"Starting {service}"
         discard execShellCmd(fmt"/usr/bin/bash {service}")
+    setForegroundColor(fgMagenta)
     echo "Entering runlevel final"
     for service in walkFiles("/init/services/runlevel3/*.sh"):
         echo fmt"Starting {service}"
         discard execShellCmd(fmt"/usr/bin/bash {service}")
 
-echo "Entering runlevel boot"
+echo "oINIT v0.1 is starting up Linux"
+setForegroundColor(fgGreen)
 mountfs()
+setForegroundColor(fgCyan)
 mount()
+setForegroundColor(fgRed)
 udev()
 services()
+resetAttributes()
 
 echo "Done!"
 
