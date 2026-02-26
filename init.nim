@@ -59,26 +59,21 @@ proc udev() =
     discard startProcess("/sbin/udevadm", args = ["settle"])
 
 proc services() =
-    setForegroundColor(fgBlue)
     echo "Entering runlevel 2"
     for service in walkFiles("/init/services/runlevel2/*.sh"):
         echo fmt"Starting {service}"
         discard execShellCmd(fmt"/usr/bin/bash {service}")
-    setForegroundColor(fgMagenta)
     echo "Entering runlevel final"
     for service in walkFiles("/init/services/runlevel3/*.sh"):
         echo fmt"Starting {service}"
         discard execShellCmd(fmt"/usr/bin/bash {service}")
-
-echo "oINIT v0.1 is starting up Linux"
+    
 setForegroundColor(fgGreen)
+echo "oINIT v0.1 is starting up Linux"
 mountfs()
-setForegroundColor(fgCyan)
 mount()
-setForegroundColor(fgRed)
 udev()
 services()
-resetAttributes()
 
 echo "Done!"
 
