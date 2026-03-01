@@ -42,4 +42,4 @@ elif option == "shutdown":
     shutdown()
 else:
     echo "unknown option"
-#writeFile("/proc/sysrq-trigger", poweroff)
+

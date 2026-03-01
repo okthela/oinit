@@ -10,7 +10,7 @@
 extern char **environ;
 
 void boot_msg(void) {
-    printf("Booting up.\n");
+    printf("STAGE 1: BOOT\n");
 }
 
 void mounts(void) {
@@ -44,15 +44,14 @@ void udev(void) {
     pid_t pid;
     printf("Start udev\n");
     posix_spawn(&pid, "/sbin/udevd", 0, 0, (char*[]){"/sbin/udevd", "--daemon", NULL}, environ);
+    sleep(1);
     printf("Triggering devices\n");
     posix_spawn(&pid, "/sbin/udevadm", 0, 0, (char*[]){"/sbin/udevadm", "trigger", NULL}, environ);
+    sleep(1);
     printf("Settling those devices\n");
     posix_spawn(&pid, "/sbin/udevadm", 0, 0, (char*[]){"/sbin/udevadm", "settle", NULL}, environ);
-    posix_spawn(&pid, "/sbin/agetty", 0, 0, (char*[]){"/sbin/agetty", "-L", "tty1", "--noclear", "115200", "vt100", NULL}, environ);
-}
-
-void supervise(void) {
-    while (1) {sleep(1);} 
+    sleep(1);
+    printf("End of udev\n");
 }
 
 int main(void) {
@@ -60,5 +59,7 @@ int main(void) {
     boot_msg();
     mounts();
     udev();
-    supervise();
+    printf("INIT COMPLETE\nINIT SERVICE MANAGEMENT\n");
+    posix_spawn(&pid, "/sbin/oinit-service", 0, 0, (char*[]){"/sbin/oinit-service", NULL}, environ);
+    while (1){sleep(1);}
 }
