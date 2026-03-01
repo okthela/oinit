@@ -19,6 +19,6 @@ int main() {
     posix_spawn(&pid, "/sbin/agetty", 0, 0, (char*[]){"/sbin/agetty", "-L", "tty4", "--noclear", "115200", "vt100", NULL}, environ);
     printf("\nBoot complete!\n-----------------------------------------------------------------\n");
     printf("oINIT v.1C\n");
-    printf("Exactly 100 lines of code!\n");
+    printf("Exactly 100 lines of code! :3\n");
     while (1){sleep(1);}
 }
