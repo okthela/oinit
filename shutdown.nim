@@ -13,7 +13,6 @@ else:
 
 proc shutdown() =
     let poweroff = "o"
-    writeFile("/proc/sysrq-trigger", poweroff)
     echo "System going down for poweroff"
     echo "Syncing file systems"
     sync()
