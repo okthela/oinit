@@ -47,10 +47,8 @@ void udev(void) {
     sleep(1);
     printf(STAR " Triggering devices\n");
     posix_spawn(&pid, "/sbin/udevadm", 0, 0, (char*[]){"/sbin/udevadm", "trigger", NULL}, environ);
-    sleep(1);
     printf(STAR " Settling devices\n");
     posix_spawn(&pid, "/sbin/udevadm", 0, 0, (char*[]){"/sbin/udevadm", "settle", NULL}, environ);
-    sleep(1);
     printf(STAR " udev complete\n");
 }
 
