@@ -62,4 +62,5 @@ int main(void) {
     printf(STAR " Init complete\n");
     printf(STAR " Starting service management\n");
     posix_spawn(&pid, "/sbin/oinit-service", 0, 0, (char*[]){"/sbin/oinit-service", NULL}, environ);
+    while (1) {sleep(1);}
 }
