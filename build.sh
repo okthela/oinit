@@ -1,3 +1,5 @@
+#!/bin/bash
+
 gcc init.c -o init
 doas mv init /sbin/oinit
 sudo mv init /sbin/oinit
