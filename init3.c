@@ -14,6 +14,10 @@ int main() {
     posix_spawn(&pid, "/sbin/agetty", 0, 0, (char*[]){"/sbin/agetty", "-L", "tty2", "--noclear", "115200", "vt100", NULL}, environ);
     posix_spawn(&pid, "/sbin/agetty", 0, 0, (char*[]){"/sbin/agetty", "-L", "tty3", "--noclear", "115200", "vt100", NULL}, environ);
     posix_spawn(&pid, "/sbin/agetty", 0, 0, (char*[]){"/sbin/agetty", "-L", "tty4", "--noclear", "115200", "vt100", NULL}, environ);
+    posix_spawn(&pid, "/sbin/agetty", 0, 0, (char*[]){"/sbin/agetty", "-L", "tty5", "--noclear", "115200", "vt100", NULL}, environ);
+    posix_spawn(&pid, "/sbin/agetty", 0, 0, (char*[]){"/sbin/agetty", "-L", "tty6", "--noclear", "115200", "vt100", NULL}, environ);
+    posix_spawn(&pid, "/sbin/agetty", 0, 0, (char*[]){"/sbin/agetty", "-L", "tty7", "--noclear", "115200", "vt100", NULL}, environ);
+    posix_spawn(&pid, "/sbin/agetty", 0, 0, (char*[]){"/sbin/agetty", "-L", "tty8", "--noclear", "115200", "vt100", NULL}, environ);
     posix_spawn(&pid, "/sbin/cat", 0, 0, (char*[]){"/sbin/cat", "/init/logo", NULL}, environ);
     printf("\n" STAR " Boot complete!\n--------------------------------------------------------\n");
     printf(STAR " oINIT v.1C\n");
